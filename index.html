@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <!-- <link rel="stylesheet" type="text/css" href="./iShare.js/demo/style/fonts/iconfont.css">
+  <link rel="stylesheet" type="text/css" href="./iShare.js/demo/style/css/ishare.css"> -->
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+  <script src="jquery.min.js" charset="utf-8"></script>
+  <style>
+    .iShare2 {
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <button type="button" name="button">点击加上</button>
+
+  <!-- <div class="iShare" data-sites="">
+    <a href="#" class="iShare_qzone"><i class="iconfont qzone">qq空间</i></a>
+    <a href="#" class="iShare_qq"><i class="iconfont qzone">qq好友</i></a>
+    <a href="#" class="iShare_weibo"><i class="iconfont weibo">微博</i></a>
+    <a href="#" class="iShare_wechat"><i class="iconfont wechat" style="vertical-align: -2px;">微信</i></a>
+  </div> -->
+
+  <script href="javascript:;" type="text/javascript" src="iShare_tidy.js"></script>
+
+  <!-- <script href="javascript:;" type="text/javascript">
+    (new iShare({container:'.iShare',config:{
+            title: '分享标题',
+            description: '这是分享描述文本',
+            url: 'https://github.com/zhansingsong',
+            // isAbroad: false,
+            // isTitle: true,
+            // initialized: true,
+            WXoptions:{
+                evenType: 'click',
+                isTitleVisibility: true,
+                title: '二维码标题',
+                isTipVisibility: true,
+                tip: '二维码描述文本',
+                bgcolor: '#2BAD13',
+            }
+        }}));
+  </script> -->
+  <script type="text/javascript">
+
+    //转换json
+    function isJsonString(str) {
+      try {
+        if (typeof JSON.parse(str) == 'object') {
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    //获取按钮并添加事件
+    var dema = $('button[name=button]');
+    dema.on('click', function() {
+      var ajax = $.get('data.json');
+      ajax.then(function(data) {
+        isJsonString(data); //解析失败将不会执行
+        var lenth = $('.iShare2').length;
+        $.each(data, function(index, item) {
+          var li = $('<div class="iShare2 is' + lenth + index + 1 +'" data-sites=""><div>'+item.title+'</div><a href="#" class="iShare_qzone"><i class="iconfont qzone">qq空间</i></a><a href="#" class="iShare_qq"><i class="iconfont qzone">qq好友</i></a><a href="#" class="iShare_weibo"><i class="iconfont weibo">微博</i></a><a href="#" class="iShare_wechat"><i class="iconfont wechat" style="vertical-align: -2px;">微信</i></a></div>');
+          $('body').append(li);
+          (new iShare({
+            container: '.is' + lenth + index + 1 + '',
+            config: {
+              title: item.title,
+              description: '描述',
+              url: 'http://www.cctvsxt.com' + item.link,
+              WXoptions: {
+                evenType: 'mouseover',
+                isTitleVisibility: true, //是否显示二维码标题,默认为显示,即为true.
+                title: '二维码标题',
+                isTipVisibility: true, //是否显示二维码操作提示,默认为显示,即为true.
+                tip: '二维码描述文本',
+                bgcolor: '#2BAD13',
+              }
+            }
+          }));
+        })
+      })
+    })
+  </script>
+
+</body>
+
+
+</html>
